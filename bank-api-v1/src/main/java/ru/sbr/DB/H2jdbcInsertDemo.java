@@ -11,6 +11,7 @@ public class H2jdbcInsertDemo {
     static final String DB_URL = "jdbc:h2:~/test2";
 
     //  Database credentials
+
     static final String USER = "sa";
     static final String PASS = "";
 

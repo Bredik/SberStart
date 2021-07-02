@@ -25,6 +25,9 @@ public class Cat {
         return weight;
     }
 
+
+
+
     public void setWeight(int weight) {
         this.weight = weight;
     }

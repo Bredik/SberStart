@@ -8,6 +8,7 @@ public class WorkDB {
             InitDB.connect();
         } catch (SQLException e) {
             e.printStackTrace();
+
         }
     }
 }

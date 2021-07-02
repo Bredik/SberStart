@@ -43,6 +43,7 @@ public class InitDB {
 
         try {
             rs = statement.executeQuery(sql);
+            
 
             while(rs.next()) {
                 int id  = rs.getInt("id");

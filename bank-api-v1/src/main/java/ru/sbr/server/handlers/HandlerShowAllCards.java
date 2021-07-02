@@ -13,6 +13,7 @@ import java.util.List;
 public class HandlerShowAllCards implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
+
         String response = "Show all..";
 
         List<Cards> a = InitDB.readTable();

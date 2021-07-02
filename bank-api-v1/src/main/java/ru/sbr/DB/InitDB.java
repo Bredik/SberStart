@@ -41,9 +41,10 @@ public class InitDB {
         ResultSet rs = null;
         List<Cards> listCards = null;
 
+
         try {
             rs = statement.executeQuery(sql);
-            
+
 
             while(rs.next()) {
                 int id  = rs.getInt("id");

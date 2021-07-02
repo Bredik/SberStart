@@ -11,6 +11,7 @@ import java.io.OutputStream;
 public class HandlerStop implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
+
         String response = "Server stop...";
 
         exchange.sendResponseHeaders(200, response.getBytes().length);

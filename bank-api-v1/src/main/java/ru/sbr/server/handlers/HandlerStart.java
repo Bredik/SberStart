@@ -9,6 +9,7 @@ import java.io.OutputStream;
 public class HandlerStart implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
+
         String response = "Server working...";
         // todo разобраться с этой строкой response.getBytes().length
         // ну и вообще разобраться с кодами ответов

@@ -26,8 +26,8 @@ public class Server {
         server = HttpServer.create(new InetSocketAddress(port), 0);
         System.out.println("Порт:" + port + ". Сервер запущен...");
         server.createContext("/", new HandlerStart());
-        server.createContext("/GET", new HandlerAddNewCard());
-        server.createContext("/SH", new HandlerShowAllCards());
+        server.createContext("/getAll", new HandlerShowAllCards());
+        server.createContext("/add", new HandlerAddNewCard());
         server.createContext("/DEP", new HandlerDepositFunds());
         server.createContext("/CH", new HandlerCheckBalance());
         server.createContext("/stop", new HandlerStop());

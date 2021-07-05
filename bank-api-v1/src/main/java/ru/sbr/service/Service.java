@@ -13,9 +13,9 @@ public class Service {
         return new Parser().toJson(cardDAO.getAllCards());
     }
 
-    public void addNewCard() {
+    public int addNewCard() {
         System.out.println("Service, addNewCard...");
-        cardDAO.addNewCard();
+        return cardDAO.addNewCard();
     }
 
     public void depFundsToCard() {

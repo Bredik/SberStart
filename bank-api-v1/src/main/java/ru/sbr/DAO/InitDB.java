@@ -4,30 +4,18 @@ import java.sql.*;
 
 public class InitDB {
     // Драйвер и путь к базе данных
+    static  final String root = System.getProperty("user.dir");
+    static final String dbName = "/bank-api";
+
     static final String JDBC_DRIVER = "org.h2.Driver";
-    static final String DB_URL = "jdbc:h2:/Users/u19305189/Desktop/projects/DataBase/DB/test1";
+    static final String DB_URL = "jdbc:h2:" + root + dbName;
 
     //  Юзер и пароль к БД
-    static final String USER = "sa";
-    static final String PASS = "";
+    static final String USER = "user";
+    static final String PASS = "user";
 
     static Connection connection;
     static Statement statement;
-
-    public static void requestAddTable() {
-        String sql = "CREATE TABLE   REG1 " +
-                "(id INTEGER not NULL, " +
-                " first VARCHAR(255), " +
-                " PRIMARY KEY ( id ))";
-        try {
-            statement.executeUpdate(sql);
-            System.out.println("База данных создана");
-        } catch (SQLException e) {
-            System.out.println("Ошибка sql в методе requestAddTable");
-            e.printStackTrace();
-        }
-        System.out.println("Created table in given database...");
-    }
 
     public static void connect() throws SQLException {
         try {

@@ -10,7 +10,7 @@ import java.util.List;
 public class CardDAO {
     public List<Cards> getAllCards() {
         System.out.println("Чтение из БД...");
-        String sql = "SELECT * FROM Card";
+        String sql = "SELECT * FROM Clients";
         ResultSet rs = null;
         List<Cards> listCards = new ArrayList<>();
 
@@ -20,7 +20,7 @@ public class CardDAO {
             rs = InitDB.statement.executeQuery(sql);
             while(rs.next()) {
                 int id  = rs.getInt("id");
-                String first = rs.getString("first");
+                String first = rs.getString("name");
 
                 listCards.add(new Cards(id, first));
             }
@@ -31,8 +31,16 @@ public class CardDAO {
         return listCards;
     }
 
-    public void addNewCard() {
+    public int addNewCard() {
+        int codeResponce = 0;
+        String sql = "INSERT INTO Card (id, first) VALUES (6, '666-123-453-767')";
+        try {
+            codeResponce = InitDB.statement.executeUpdate(sql);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
 
+        return codeResponce;
     }
 
     public void depFundsToCard() {

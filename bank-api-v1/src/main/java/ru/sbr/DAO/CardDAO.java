@@ -2,27 +2,34 @@ package ru.sbr.DAO;
 
 import ru.sbr.entity.Cards;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import static ru.sbr.DAO.ConnectionDB.connection;
+
 public class CardDAO {
-    public List<Cards> getAllCards() {
+    public static List<Cards> getAllCards() {
         System.out.println("Чтение из БД...");
-        String sql = "SELECT * FROM Clients";
+        String sql = "SELECT * FROM Cards";
         ResultSet rs = null;
         List<Cards> listCards = new ArrayList<>();
 
         try {
             //???
             // todo нужно ли завершить executeQuery
-            rs = InitDB.statement.executeQuery(sql);
+            //todo нужно ли закрывать statment  и где
+            Statement statement = connection.createStatement();
+            rs = statement.executeQuery(sql);
+
             while(rs.next()) {
                 int id  = rs.getInt("id");
-                String first = rs.getString("name");
+                String number = rs.getString("number");
 
-                listCards.add(new Cards(id, first));
+                listCards.add(new Cards(id, number));
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -33,9 +40,10 @@ public class CardDAO {
 
     public int addNewCard() {
         int codeResponce = 0;
-        String sql = "INSERT INTO Card (id, first) VALUES (6, '666-123-453-767')";
+        String sql = "INSERT INTO CARDS (NUMBER, BALABCE, ACCOUNT_ID) VALUES ('123-123', 0, 1)";
         try {
-            codeResponce = InitDB.statement.executeUpdate(sql);
+            Statement statement = connection.createStatement();
+            codeResponce = statement.executeUpdate(sql);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

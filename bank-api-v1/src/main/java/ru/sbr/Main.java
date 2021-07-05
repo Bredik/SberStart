@@ -1,6 +1,6 @@
 package ru.sbr;
 
-import ru.sbr.DAO.WorkDB;
+import ru.sbr.DAO.LaunchDB;
 import ru.sbr.controller.Server;
 
 import java.io.IOException;
@@ -10,6 +10,6 @@ public class Main {
         System.out.println("Hello world");
 
         Server.start();
-        WorkDB.init();
+        LaunchDB.connect();
     }
 }

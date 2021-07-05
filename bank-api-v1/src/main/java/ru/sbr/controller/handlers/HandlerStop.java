@@ -2,8 +2,7 @@ package ru.sbr.controller.handlers;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import ru.sbr.DAO.InitDB;
-import ru.sbr.DAO.WorkDB;
+import ru.sbr.DAO.LaunchDB;
 import ru.sbr.controller.Server;
 
 import java.io.IOException;
@@ -22,7 +21,7 @@ public class HandlerStop implements HttpHandler {
         output.flush();
         exchange.close();
 
-        WorkDB.disconnect();
+        LaunchDB.disconnect();
         Server.stop();
     }
 }

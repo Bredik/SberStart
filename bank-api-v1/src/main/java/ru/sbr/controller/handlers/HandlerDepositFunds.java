@@ -1,4 +1,4 @@
-package ru.sbr.server.handlers;
+package ru.sbr.controller.handlers;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;

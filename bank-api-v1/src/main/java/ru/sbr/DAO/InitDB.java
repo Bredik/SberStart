@@ -1,13 +1,6 @@
-package ru.sbr.DB;
+package ru.sbr.DAO;
 
-import ru.sbr.DTO.Cards;
-import ru.sbr.parser.ToJson;
-
-import java.io.IOException;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class InitDB {
     // Драйвер и путь к базе данных
@@ -34,35 +27,6 @@ public class InitDB {
             e.printStackTrace();
         }
         System.out.println("Created table in given database...");
-    }
-
-    public static List<Cards> readTable() {
-        String sql = "SELECT * FROM Card";
-        ResultSet rs = null;
-        List<Cards> listCards = null;
-
-
-        try {
-            rs = statement.executeQuery(sql);
-
-
-            while(rs.next()) {
-                int id  = rs.getInt("id");
-                String first = rs.getString("first");
-
-                listCards = new ArrayList<>(Arrays.asList(
-                        new Cards(id, first)
-                ));
-
-                System.out.print("ID: " + id);
-                System.out.print(", First: " + first);
-                System.out.println("");
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-        return listCards;
     }
 
     public static void connect() throws SQLException {

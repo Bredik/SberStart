@@ -11,15 +11,18 @@ import java.io.OutputStream;
 public class HandlerStop implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
+        String response = "";
 
-        String response = "Server stop...";
-
-        exchange.sendResponseHeaders(200, response.getBytes().length);
-        OutputStream output = exchange.getResponseBody();
-        output.write(response.getBytes());
-
-        output.flush();
-        exchange.close();
+        if ("GET".equals(exchange.getRequestMethod())) {
+            response = "Server stop...";
+            exchange.sendResponseHeaders(200, response.getBytes().length);
+            OutputStream output = exchange.getResponseBody();
+            output.write(response.getBytes());
+            output.flush();
+            exchange.close();
+        } else  {
+            exchange.sendResponseHeaders(405, -1);
+        }
 
         LaunchDB.disconnect();
         Server.stop();

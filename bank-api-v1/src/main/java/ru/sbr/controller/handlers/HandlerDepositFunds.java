@@ -29,17 +29,15 @@ public class HandlerDepositFunds implements HttpHandler {
 
         //посылаем запрос на добавление карты с  id  аккаунта
         int codeResponse = new Service().depFundsToCard(sum, idCard);
+        System.out.println("code = " + codeResponse);
 
         if (codeResponse == 1) {
-            response = "Card add!";
+            response = "Sum add!";
         } else response = "Your card has not been added or an error has occurred";
 
         exchange.sendResponseHeaders(200, response.getBytes().length);
         OutputStream os = exchange.getResponseBody();
         os.write(response.getBytes());
-        os.close();
-
-
-
+        exchange.close();
     }
 }

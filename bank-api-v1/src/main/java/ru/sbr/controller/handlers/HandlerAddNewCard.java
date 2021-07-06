@@ -11,29 +11,26 @@ import java.io.OutputStream;
 public class HandlerAddNewCard implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        System.out.println("HandlerAddNewCard, handle");
-
-        ParserURI parserURI = new ParserURI(); // объект для парсинга числа из урла
-        String path = exchange.getRequestURI().getPath(); // получаем урл
-
-        long idAccount = parserURI.getNumberFromUri(path); // получаем id url'a
-
         String response = "";
-        //int codeResponse = 1;
 
-        System.out.println("path = " + path);
-        System.out.println(idAccount);
+        if ("GET".equals(exchange.getRequestMethod())) {
+            String path = exchange.getRequestURI().getPath(); // получаем урл
+            String[] strings = path.split("/");
+            // получаем id счета, на который надо добавить карту
+            long idAccount = Long.parseLong(strings[strings.length - 1]);
+            // посылаем запрос на добавление карты с  id  аккаунта
+            int codeResponse = new Service().addNewCard(idAccount);
+            if (codeResponse == 1) {
+                response = "Card add!";
+            } else response = "Your card has not been added or an error has occurred";
 
-        // посылаем запрос на добавление карты с  id  аккаунта
-        int codeResponse = new Service().addNewCard(idAccount);;
+            exchange.sendResponseHeaders(200, response.getBytes().length);
+            OutputStream os = exchange.getResponseBody();
+            os.write(response.getBytes());
 
-        if (codeResponse == 1) {
-            response = "Card add!";
-        } else response = "Your card has not been added or an error has occurred";
-
-        exchange.sendResponseHeaders(200, response.getBytes().length);
-        OutputStream os = exchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
+        } else {
+            exchange.sendResponseHeaders(405, -1);
+        }
+        exchange.close();
     }
 }

@@ -3,13 +3,10 @@ package ru.sbr.service;
 import ru.sbr.DAO.CardDAO;
 import ru.sbr.utils.ParserJson;
 
-import java.io.IOException;
-
 public class Service {
     private final CardDAO cardDAO = new CardDAO();
 
-    public String getAllCards() throws IOException {
-        System.out.println("Service, передаю запрос на получение списка всех карт...");
+    public String getAllCards() {
         return new ParserJson().toJson(cardDAO.getAllCards());
     }
 
@@ -19,12 +16,10 @@ public class Service {
     }
 
     public int depFundsToCard(float sum, long idCard) {
-        cardDAO.depFundsToCard(sum, idCard);
-        return 0;
+        return cardDAO.depFundsToCard(sum, idCard);
     }
 
-    public int checkBalance() {
-        //return new Parser().toJson(cardDAO.checkBalance());
-        return 0;
+    public String checkBalance(long idCard) {
+        return new ParserJson().toJson1(cardDAO.checkBalance(idCard));
     }
 }

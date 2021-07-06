@@ -15,7 +15,7 @@ public class CardDAO {
     public static List<Cards> getAllCards() {
         System.out.println("Чтение из БД...");
         String sql = "SELECT * FROM Cards";
-        ResultSet rs = null;
+        ResultSet resultSet = null;
         List<Cards> listCards = new ArrayList<>();
 
         try {
@@ -23,14 +23,15 @@ public class CardDAO {
             // todo нужно ли завершить executeQuery
             //todo нужно ли закрывать statment  и где
             Statement statement = connection.createStatement();
-            rs = statement.executeQuery(sql);
+            resultSet = statement.executeQuery(sql);
 
-            while(rs.next()) {
-                int id  = rs.getInt("id");
-                String number = rs.getString("number");
-
+            while(resultSet.next()) {
+                int id  = resultSet.getInt("id");
+                String number = resultSet.getString("card_number");
                 listCards.add(new Cards(id, number));
             }
+
+            statement.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -38,12 +39,17 @@ public class CardDAO {
         return listCards;
     }
 
-    public int addNewCard() {
+    public int addNewCard(long idAccount) {
+        System.out.println();
         int codeResponce = 0;
-        String sql = "INSERT INTO CARDS (NUMBER, BALABCE, ACCOUNT_ID) VALUES ('123-123', 0, 1)";
+        String sql = "INSERT INTO CARDS (balance, id_account) VALUES (?, ?)";
         try {
-            Statement statement = connection.createStatement();
-            codeResponce = statement.executeUpdate(sql);
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, 0);
+            preparedStatement.setLong(2,idAccount);
+            System.out.println("посылаю запрос в БД");
+            codeResponce = preparedStatement.executeUpdate();
+            preparedStatement.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -51,8 +57,21 @@ public class CardDAO {
         return codeResponce;
     }
 
-    public void depFundsToCard() {
+    public int depFundsToCard(float sum, long idCard) {
+        int codeResponce = 0;
+        String sql = "UPDATE CARDS SET BALANCE = BALANCE + ? WHERE ID = ?;";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setFloat(1, sum);
+            preparedStatement.setLong(2,idCard);
+            System.out.println("посылаю запрос в БД");
+            codeResponce = preparedStatement.executeUpdate();
+            preparedStatement.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
 
+        return codeResponce;
     }
 
     public int checkBalance() {

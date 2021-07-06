@@ -2,19 +2,44 @@ package ru.sbr.controller.handlers;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import ru.sbr.service.Service;
+import ru.sbr.utils.ParserURI;
 
 import java.io.IOException;
 import java.io.OutputStream;
 
 public class HandlerDepositFunds implements HttpHandler {
     @Override
-    public void handle(HttpExchange t) throws IOException {
-        String response = "Deposit funds...";
-        // разобраться с этой строкой response.getBytes().length
-        // ну и вообще разобраться с кодами ответов
-        t.sendResponseHeaders(200, response.getBytes().length);
-        OutputStream os = t.getResponseBody();
+    public void handle(HttpExchange exchange) throws IOException {
+        System.out.println("DepositFunds, handle");
+
+        ParserURI parserURI = new ParserURI(); // объект для парсинга числа из урла
+        String path = exchange.getRequestURI().getPath(); // получаем урл
+        System.out.println("path = " + path);
+
+        float sum = parserURI.getSumFromUri(path); // получаем id сумму
+        System.out.println("Сумма");
+        System.out.println(sum);
+        long idCard = parserURI.getIdFromUri(path); // получаем id сумму
+        System.out.println("id");
+        System.out.println(idCard);
+
+        String response = "";
+        //int codeResponse = 1;
+
+        //посылаем запрос на добавление карты с  id  аккаунта
+        int codeResponse = new Service().depFundsToCard(sum, idCard);
+
+        if (codeResponse == 1) {
+            response = "Card add!";
+        } else response = "Your card has not been added or an error has occurred";
+
+        exchange.sendResponseHeaders(200, response.getBytes().length);
+        OutputStream os = exchange.getResponseBody();
         os.write(response.getBytes());
         os.close();
+
+
+
     }
 }

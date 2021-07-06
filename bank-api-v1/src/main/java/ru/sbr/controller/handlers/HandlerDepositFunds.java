@@ -7,11 +7,22 @@ import ru.sbr.utils.ParserURI;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 
 public class HandlerDepositFunds implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        System.out.println("DepositFunds, handle");
+        String responce = "";
+
+        if ("POST".equals(exchange.getRequestMethod())) {
+
+
+        } else {
+            exchange.sendResponseHeaders(405, -1);
+        }
+
+        /*System.out.println("DepositFunds, handle");
 
         ParserURI parserURI = new ParserURI(); // объект для парсинга числа из урла
         String path = exchange.getRequestURI().getPath(); // получаем урл
@@ -37,7 +48,10 @@ public class HandlerDepositFunds implements HttpHandler {
 
         exchange.sendResponseHeaders(200, response.getBytes().length);
         OutputStream os = exchange.getResponseBody();
-        os.write(response.getBytes());
+        os.write(response.getBytes());*/
         exchange.close();
     }
 }
+
+
+

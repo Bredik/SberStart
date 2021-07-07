@@ -1,33 +1,44 @@
 package ru.sbr.DAO;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.*;
+import java.util.Properties;
 
 public class ConnectionDB {
-    //todo сдеать файл с настройками
-    // Драйвер и путь к базе данных
-    static  final String root = System.getProperty("user.dir");
-    static final String dbName = "/bank-api";
-
-    static final String JDBC_DRIVER = "org.h2.Driver";
-    static final String DB_URL = "jdbc:h2:" + root + dbName;
-
-    // Юзер и пароль к БД
-    static final String USER = "user";
-    static final String PASS = "user";
-
     public static Connection connection;
 
     public static void connect() throws SQLException {
+        FileInputStream inputStream;
+        Properties property = new Properties();
+
         try {
-            Class.forName(JDBC_DRIVER); //Регистрируем драйвер
+            inputStream = new FileInputStream("src/main/resources/configDB.properties");
+            property.load(inputStream);
+        } catch (FileNotFoundException e) {
+            System.out.println("Не найден конфиг");
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String user = property.getProperty("db.login");
+        String pass = property.getProperty("db.password");
+        String jdbc_driver = property.getProperty("jdbc_driver");
+        String dbName = property.getProperty("dbName");
+        String db_url = property.getProperty("db_url") + System.getProperty("user.dir") + dbName;;
+
+        try {
+            Class.forName(jdbc_driver); //Регистрируем драйвер
             System.out.println("Соединяемся с базой...");
-            connection = DriverManager.getConnection(DB_URL, USER, PASS); //Открываем соединение
+            connection = DriverManager.getConnection(db_url, user, pass); //Открываем соединение
             System.out.println("База Подключена!");
         } catch (ClassNotFoundException e) {
             System.out.println("ERROR! Класс не найден");
             e.printStackTrace();
         } catch (SQLException e) {
-            System.out.println( "Ошибка sql");
+            System.out.println("Ошибка sql");
             e.printStackTrace();
         } catch (Exception e) {
             System.out.println("Другая ошибка");

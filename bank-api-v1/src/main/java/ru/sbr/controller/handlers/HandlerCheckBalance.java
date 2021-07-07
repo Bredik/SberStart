@@ -7,25 +7,40 @@ import ru.sbr.utils.ParserURI;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 
 public class HandlerCheckBalance implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        System.out.println("Checkbalance, handle");
+        String response;
+        OutputStream output;
 
-        ParserURI parserURI = new ParserURI(); // объект для парсинга числа из урла
-        String path = exchange.getRequestURI().getPath(); // получаем урл
+        if ("GET".equals(exchange.getRequestMethod())) {
+            long idCard = new ParserURI().getNumberFromUri(exchange.getRequestURI().getPath());
+            String balance  = new Service().checkBalance(idCard);
 
-        long idCard = parserURI.getNumberFromUri(path); // получаем id url'a
+            response = checkResponse(balance);
 
-        //int codeResponse = 1;
-
-        //посылаем запрос на добавление карты с  id  аккаунта
-        String response = new Service().checkBalance(idCard);
-
-        exchange.sendResponseHeaders(200, response.getBytes().length);
-        OutputStream os = exchange.getResponseBody();
-        os.write(response.getBytes());
+            exchange.sendResponseHeaders(200, response.getBytes().length);
+            output = exchange.getResponseBody();
+            output.write(response.getBytes());
+        } else {
+            response = "HTTP 405 Method Not Allowed";
+            exchange.sendResponseHeaders(405, response.getBytes(StandardCharsets.UTF_8).length);
+            output = exchange.getResponseBody();
+            output.write(response.getBytes());
+            output.flush();
+        }
         exchange.close();
+    }
+
+    private String checkResponse(String data) {
+        if (data == null) {
+            return "SERVER ERROR";
+        }
+        if (data.equals("{}")) {
+            return "There is no such card";
+        }
+        return data;
     }
 }

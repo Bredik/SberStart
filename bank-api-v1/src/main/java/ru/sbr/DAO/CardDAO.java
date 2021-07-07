@@ -1,6 +1,7 @@
 package ru.sbr.DAO;
 
 import ru.sbr.entity.Cards;
+import ru.sbr.entity.Deposite;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ public class CardDAO {
     public static List<Cards> getAllCards() {
         System.out.println("Чтение из БД...");
         String sql = "SELECT * FROM Cards";
-        ResultSet resultSet = null;
+        ResultSet resultSet;
         List<Cards> listCards = new ArrayList<>();
 
         try {
@@ -33,28 +34,35 @@ public class CardDAO {
         return listCards;
     }
 
-    public int addNewCard(long idAccount) {
-        int codeResponce = 0;
-        String sql = "INSERT INTO CARDS (balance, id_account) VALUES (?, ?)";
+    public Map<Long, Float> checkBalance(long idCard) {
+        System.out.println("id Card is not exist");
+        System.out.println(idCard);
+        ResultSet resultSet;
+        Map<Long, Float> cardBalance = new HashMap<>();
+        String sql = "SELECT balance FROM CARDS WHERE id = ?";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, 0);
-            preparedStatement.setLong(2,idAccount);
+            preparedStatement.setLong(1,idCard);
+
             System.out.println("посылаю запрос в БД");
-            codeResponce = preparedStatement.executeUpdate();
+            resultSet = preparedStatement.executeQuery();
+
+            while(resultSet.next()) {
+                float number = resultSet.getFloat("balance");
+                cardBalance.put(idCard, number);
+            }
+
             preparedStatement.close();
-        } catch (SQLIntegrityConstraintViolationException throwables) {
-            System.out.println("ERROR! Нет такого счета: " + idAccount);
-            throwables.printStackTrace();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return codeResponce;
+        return cardBalance;
     }
 
-    public int depFundsToCard(float sum, long idCard) {
+    public int depFundsToCard(Deposite deposite) {
         int codeResponce = 0;
-
+        float sum = deposite.getSum();
+        long idCard = deposite.getId();
         String sql = "UPDATE CARDS SET BALANCE = BALANCE + ? WHERE ID = ?;";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -69,28 +77,23 @@ public class CardDAO {
         return codeResponce;
     }
 
-    public Map<Long, Float> checkBalance(long idCard) {
-        ResultSet resultSet = null;
-        Map<Long, Float> cardBalance = new HashMap<>();
-
-        String sql = "SELECT balance FROM CARDS WHERE id = ?";
+    public int addNewCard(Deposite deposite) {
+        int codeResponce = 0;
+        String sql = "INSERT INTO CARDS (balance, id_account) VALUES (?, ?)";
+        long idAccount = deposite.getId();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setLong(1,idCard);
+            preparedStatement.setInt(1, 0);
+            preparedStatement.setLong(2, idAccount);
             System.out.println("посылаю запрос в БД");
-            resultSet = preparedStatement.executeQuery();
-
-            while(resultSet.next()) {
-                //long id  = resultSet.getInt("id");
-                float number = resultSet.getFloat("balance");
-                cardBalance.put(idCard, number);
-            }
-
+            codeResponce = preparedStatement.executeUpdate();
             preparedStatement.close();
+        } catch (SQLIntegrityConstraintViolationException throwables) {
+            System.out.println("ERROR! Нет такого счета: " + idAccount);
+            throwables.printStackTrace();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-
-        return cardBalance;
+        return codeResponce;
     }
 }

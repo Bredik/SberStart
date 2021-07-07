@@ -1,0 +1,4 @@
+2021-07-07 14:58:55 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Таблица "CARDS" не найдена
+Table "CARDS" not found; SQL statement:
+SELECT * FROM Cards [42102-199]

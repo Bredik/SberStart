@@ -12,7 +12,7 @@ import java.util.Map;
 import static ru.sbr.DAO.ConnectionDB.connection;
 
 public class CardDAO {
-    public static List<Cards> getAllCards() {
+    public  List<Cards> getAllCards() {
         System.out.println("Чтение из БД...");
         String sql = "SELECT * FROM Cards";
         ResultSet resultSet;
@@ -23,7 +23,7 @@ public class CardDAO {
             resultSet = statement.executeQuery(sql);
 
             while(resultSet.next()) {
-                int id  = resultSet.getInt("id");
+                long id  = resultSet.getInt("id");
                 String number = resultSet.getString("card_number");
                 listCards.add(new Cards(id, number));
             }

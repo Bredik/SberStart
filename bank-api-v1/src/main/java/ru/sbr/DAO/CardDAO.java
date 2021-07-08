@@ -13,13 +13,13 @@ import static ru.sbr.DAO.ConnectionDB.connection;
 
 public class CardDAO {
     public  List<Cards> getAllCards() {
-        System.out.println("Чтение из БД...");
         String sql = "SELECT * FROM Cards";
         ResultSet resultSet;
         List<Cards> listCards = new ArrayList<>();
 
         try {
             Statement statement = connection.createStatement();
+            System.out.println("посылаю запрос на чтение карт из БД");
             resultSet = statement.executeQuery(sql);
 
             while(resultSet.next()) {
@@ -35,8 +35,6 @@ public class CardDAO {
     }
 
     public Map<Long, Float> checkBalance(long idCard) {
-        System.out.println("id Card is not exist");
-        System.out.println(idCard);
         ResultSet resultSet;
         Map<Long, Float> cardBalance = new HashMap<>();
         String sql = "SELECT balance FROM CARDS WHERE id = ?";
@@ -44,7 +42,7 @@ public class CardDAO {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setLong(1,idCard);
 
-            System.out.println("посылаю запрос в БД");
+            System.out.println("посылаю запрос на проверку баланса в БД");
             resultSet = preparedStatement.executeQuery();
 
             while(resultSet.next()) {
@@ -68,7 +66,7 @@ public class CardDAO {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setFloat(1, sum);
             preparedStatement.setLong(2,idCard);
-            System.out.println("посылаю запрос в БД");
+            System.out.println("посылаю запрос на внесение сумму в БД");
             codeResponce = preparedStatement.executeUpdate();
             preparedStatement.close();
         } catch (SQLException throwables) {
@@ -78,15 +76,15 @@ public class CardDAO {
     }
 
     public int addNewCard(Deposite deposite) {
-        int codeResponce = 0;
+        int codeResponse = 0;
         String sql = "INSERT INTO CARDS (balance, id_account) VALUES (?, ?)";
         long idAccount = deposite.getId();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, 0);
             preparedStatement.setLong(2, idAccount);
-            System.out.println("посылаю запрос в БД");
-            codeResponce = preparedStatement.executeUpdate();
+            System.out.println("посылаю запрос на добавление новой карты в БД");
+            codeResponse = preparedStatement.executeUpdate();
             preparedStatement.close();
         } catch (SQLIntegrityConstraintViolationException throwables) {
             System.out.println("ERROR! Нет такого счета: " + idAccount);
@@ -94,6 +92,6 @@ public class CardDAO {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return codeResponce;
+        return codeResponse;
     }
 }

@@ -17,6 +17,7 @@ public class HandlerGetAllCards implements HttpHandler {
         if ("GET".equals(exchange.getRequestMethod())) {
             response = new Service().getAllCards();
             exchange.sendResponseHeaders(200, response.getBytes(StandardCharsets.UTF_8).length);
+
             output = exchange.getResponseBody();
             output.write(response.getBytes());
             output.flush();
@@ -30,3 +31,5 @@ public class HandlerGetAllCards implements HttpHandler {
         exchange.close();
     }
 }
+
+

@@ -23,6 +23,4 @@ public class Service {
     public int depFundsToCard(InputStream response) {
         return cardDAO.depFundsToCard(new ParserJson().fromJson(response));
     }
-
-
 }

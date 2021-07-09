@@ -11,7 +11,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class ServerTest {
+public class ServerPositiveTest {
     private String address;
     private String requestBody;
     private HttpURLConnection connection;

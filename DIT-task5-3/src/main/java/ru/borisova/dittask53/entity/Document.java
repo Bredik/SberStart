@@ -1,8 +1,11 @@
 package ru.borisova.dittask53.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 
-@Entity(name = "documents")
+@Entity
+@Table(name = "document")
 public class Document {
 
     @Id
@@ -13,11 +16,15 @@ public class Document {
     @Column(name = "name")
     private String name;
 
-    public Document() {
-    }
+    @Column(name = "barcode")
+    private String barcode;
 
-    public Document(String name) {
-        this.name = name;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "box_id")
+    @JsonBackReference
+    private Box box;
+
+    public Document() {
     }
 
     public Long getId() {
@@ -32,11 +39,29 @@ public class Document {
         this.name = name;
     }
 
+    public String getBarcode() {
+        return barcode;
+    }
+
+    public void setBarcode(String barcode) {
+        this.barcode = barcode;
+    }
+
+    public Box getBox() {
+        return box;
+    }
+
+    public void setBox(Box box) {
+        this.box = box;
+    }
+
     @Override
     public String toString() {
         return "Document{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", barcode='" + barcode + '\'' +
+                ", box=" + box +
                 '}';
     }
 }

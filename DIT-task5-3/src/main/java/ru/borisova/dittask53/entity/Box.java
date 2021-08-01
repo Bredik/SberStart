@@ -1,9 +1,12 @@
 package ru.borisova.dittask53.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.util.List;
 
-@Entity(name = "boxes")
+@Entity
+@Table(name = "box")
 public class Box {
 
     @Id
@@ -14,16 +17,14 @@ public class Box {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "box_id", referencedColumnName = "id")
-    private List<Document> documents;
+    @Column(name = "barcode")
+    private String barcode;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "box")
+    @JsonBackReference
+    private List<Document> listDocs;
 
     public Box() {
-    }
-
-
-    public Box(String name) {
-        this.name = name;
     }
 
     public Long getId() {
@@ -38,12 +39,24 @@ public class Box {
         this.name = name;
     }
 
+    public String getBarcode() {
+        return barcode;
+    }
+
+    public void setBarcode(String barcode) {
+        this.barcode = barcode;
+    }
+
+    public List<Document> getListDocs() {
+        return listDocs;
+    }
+
     @Override
     public String toString() {
         return "Box{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", documents=" + documents +
+                ", barcode='" + barcode + '\'' +
                 '}';
     }
 }

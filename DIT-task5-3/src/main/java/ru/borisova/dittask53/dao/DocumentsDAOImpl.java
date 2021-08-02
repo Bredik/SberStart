@@ -15,7 +15,6 @@ import java.util.List;
  */
 @Repository
 public class DocumentsDAOImpl implements DocumentDAO {
-
     @Autowired
     private EntityManager entityManager;
 
@@ -24,6 +23,7 @@ public class DocumentsDAOImpl implements DocumentDAO {
         Session session = entityManager.unwrap(Session.class);
         Query<Document> query = session.createQuery("from Document", Document.class);
         List<Document> allDocument = query.getResultList();
+        System.out.println("Список документов = " + allDocument.toString());
         return allDocument;
     }
 
@@ -32,5 +32,11 @@ public class DocumentsDAOImpl implements DocumentDAO {
         Session session = entityManager.unwrap(Session.class);
         Document document = session.get(Document.class, id);
         return document;
+    }
+
+    @Override
+    public void saveDoc(Document document) {
+        Session session = entityManager.unwrap(Session.class);
+        session.saveOrUpdate(document);
     }
 }

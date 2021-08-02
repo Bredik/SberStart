@@ -17,12 +17,17 @@ public class BoxServiceImpl implements BoxService {
     @Transactional
     public List<Box> getAllBox() {
         return boxDAO.getAllBox();
-
     }
 
     @Override
     @Transactional
     public Box getBox(long id) {
-        return null;
+        return boxDAO.getBox(id);
+    }
+
+    @Override
+    @Transactional
+    public void saveBox(Box box) {
+        boxDAO.saveBox(box);
     }
 }

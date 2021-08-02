@@ -29,4 +29,10 @@ public class DocumentServiceImpl implements DocumentService {
     public List<Document> getAllDocument() {
         return documentDAO.getAllDocument();
     }
+
+    @Override
+    @Transactional
+    public void saveDoc(Document document) {
+        documentDAO.saveDoc(document);
+    }
 }

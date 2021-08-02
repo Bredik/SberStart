@@ -61,7 +61,7 @@ public class Document {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", barcode='" + barcode + '\'' +
-                ", box=" + box +
+                ", box_id=" + box.getId() +
                 '}';
     }
 }

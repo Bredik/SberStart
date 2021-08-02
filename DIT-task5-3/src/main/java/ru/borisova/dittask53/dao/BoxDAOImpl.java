@@ -24,6 +24,14 @@ public class BoxDAOImpl implements BoxDAO {
 
     @Override
     public Box getBox(Long id) {
-        return null;
+        Session session = entityManager.unwrap(Session.class);
+        Box box = session.get(Box.class, id);
+        return box;
+    }
+
+    @Override
+    public void saveBox(Box box) {
+        Session session = entityManager.unwrap(Session.class);
+        session.saveOrUpdate(box);
     }
 }

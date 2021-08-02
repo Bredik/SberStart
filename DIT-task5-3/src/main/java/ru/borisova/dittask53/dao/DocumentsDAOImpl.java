@@ -9,6 +9,10 @@ import ru.borisova.dittask53.entity.Document;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+/*
+Что бы дао мог подключаться к БД через хибернэйт, дао должен иметь доступ к
+сешнфэктори, который мы прописали в апликейшенКонтекст
+ */
 @Repository
 public class DocumentsDAOImpl implements DocumentDAO {
 

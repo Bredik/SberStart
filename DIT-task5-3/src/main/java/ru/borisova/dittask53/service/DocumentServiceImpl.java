@@ -14,6 +14,10 @@ public class DocumentServiceImpl implements DocumentService {
     @Autowired
     private DocumentDAO documentDAO;
 
+    /*
+   При использовании этой аннотации спринг берет на себя ответственность
+   за открытие и закрытие транзакций
+   */
     @Override
     @Transactional
     public Document getDocument(long id) {
@@ -21,6 +25,7 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
+    @Transactional
     public List<Document> getAllDocument() {
         return documentDAO.getAllDocument();
     }

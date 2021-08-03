@@ -4,6 +4,8 @@ import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import ru.borisova.dittask53.dto.SaveDocumentDTO;
+import ru.borisova.dittask53.entity.Box;
 import ru.borisova.dittask53.entity.Document;
 
 import javax.persistence.EntityManager;
@@ -35,8 +37,11 @@ public class DocumentsDAOImpl implements DocumentDAO {
     }
 
     @Override
-    public void saveDoc(Document document) {
+    public void saveDoc(SaveDocumentDTO document) {
         Session session = entityManager.unwrap(Session.class);
-        session.saveOrUpdate(document);
+        // todo проверка на null
+        Box box = session.get(Box.class, document.getBox_id());
+        box.addDocument(document.getDocument());
+        session.saveOrUpdate(box);
     }
 }

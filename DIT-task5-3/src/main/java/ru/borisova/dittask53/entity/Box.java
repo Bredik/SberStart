@@ -3,6 +3,7 @@ package ru.borisova.dittask53.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -23,6 +24,16 @@ public class Box {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "box")
     @JsonBackReference
     private List<Document> listDocs;
+
+    public void addDocument(Document document) {
+        if (document != null) {
+            if (listDocs == null) {
+                listDocs = new ArrayList<Document>();
+            }
+            listDocs.add(document);
+            document.setBox(this);
+        }
+    }
 
     public Box() {
     }
@@ -50,6 +61,16 @@ public class Box {
     public List<Document> getListDocs() {
         return listDocs;
     }
+
+    public void setListDocs(List<Document> l){
+        l.forEach(e -> e.setBox(this));
+        this.listDocs = l;
+    }
+
+    /*public void addDocument(Document d){
+        d.setBox(this);
+        this.listDocs.add(d);
+    }*/
 
     @Override
     public String toString() {

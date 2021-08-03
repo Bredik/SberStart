@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.borisova.dittask53.dao.DocumentDAO;
+import ru.borisova.dittask53.dto.SaveDocumentDTO;
 import ru.borisova.dittask53.entity.Document;
 
 import java.util.List;
@@ -32,7 +33,7 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     @Transactional
-    public void saveDoc(Document document) {
+    public void saveDoc(SaveDocumentDTO document) {
         documentDAO.saveDoc(document);
     }
 }

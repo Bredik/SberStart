@@ -1,10 +1,9 @@
-package ru.borisova.dittask53.controller;
+package ru.borisova.dittask53_v2.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.borisova.dittask53.dto.SaveDocumentDTO;
-import ru.borisova.dittask53.entity.Document;
-import ru.borisova.dittask53.service.DocumentService;
+import ru.borisova.dittask53_v2.entity.Document;
+import ru.borisova.dittask53_v2.service.DocumentService;
 
 import java.util.List;
 
@@ -24,20 +23,34 @@ public class ControllerDocument {
     public Document getDocument(@PathVariable long id) {
         Document document = documentService.getDocument(id);
 
+        //todo сделать свои исключения
         if (document == null) {
-            throw new RuntimeException("No such documents");
+            throw new NullPointerException("No such documents");
+        }
+        return document;
+    }
+
+    @PostMapping("/updateDoc")
+    public Document addNewDoc(@RequestBody Document document) {
+        if (document == null) {
+            throw new NullPointerException("No such documents");
+        } else {
+            documentService.saveDoc(document);
         }
         return document;
     }
 
     @PostMapping("/saveDoc")
-    public SaveDocumentDTO addNewDoc(@RequestBody SaveDocumentDTO document) {
-        if (document == null) {
-            throw new RuntimeException("No such documents");
-        } else {
-            documentService.saveDoc(document);
-        }
-
+    public Document updateNewBox(@RequestBody Document document) {
+        documentService.saveDoc(document);
         return document;
     }
+
+    @PostMapping("/changeBox/")
+    public Document changeBoxOfDoc(@RequestBody Document document) {
+        documentService.saveDoc(document);
+        return document;
+    }
+
+
 }

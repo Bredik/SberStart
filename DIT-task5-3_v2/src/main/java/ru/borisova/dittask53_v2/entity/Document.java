@@ -1,9 +1,10 @@
-package ru.borisova.dittask53.entity;
+package ru.borisova.dittask53_v2.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 @Entity
 @Table(name = "document")
 public class Document {
@@ -19,16 +20,16 @@ public class Document {
     @Column(name = "barcode")
     private String barcode;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "box_id")
-    @JsonBackReference
-    private Box box;
+    private Long box_id;
 
-    public Document() {
-    }
+    public Document() {}
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -47,12 +48,12 @@ public class Document {
         this.barcode = barcode;
     }
 
-    public Box getBox() {
-        return box;
+    public Long getBox_id() {
+        return box_id;
     }
 
-    public void setBox(Box box) {
-        this.box = box;
+    public void setBox_id(Long box_id) {
+        this.box_id = box_id;
     }
 
     @Override
@@ -61,7 +62,6 @@ public class Document {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", barcode='" + barcode + '\'' +
-                ", box_id=" + box +
                 '}';
     }
 }

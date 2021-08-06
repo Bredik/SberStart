@@ -1,11 +1,10 @@
-package ru.borisova.dittask53.controller;
+package ru.borisova.dittask53_v2.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.borisova.dittask53.entity.Box;
-import ru.borisova.dittask53.entity.Document;
-import ru.borisova.dittask53.service.BoxService;
-import ru.borisova.dittask53.service.DocumentService;
+import ru.borisova.dittask53_v2.entity.Box;
+import ru.borisova.dittask53_v2.entity.Document;
+import ru.borisova.dittask53_v2.service.BoxService;
 
 import java.util.List;
 
@@ -25,7 +24,6 @@ public class ControllerBox {
     @GetMapping("/box/{id}")
     public Box getBox(@PathVariable long id) {
         Box box = boxService.getBox(id);
-        System.out.println("id = " + id);
 
         if (box == null) {
             throw new RuntimeException("No such documents");
@@ -37,5 +35,16 @@ public class ControllerBox {
     public Box addNewBox(@RequestBody Box box) {
         boxService.saveBox(box);
         return box;
+    }
+
+    @PostMapping("/updateBox")
+    public Box updateNewBox(@RequestBody Box box) {
+        boxService.saveBox(box);
+        return box;
+    }
+
+    @GetMapping("/getDocByBox/{id}")
+    public List<Document> getDocByBox(@PathVariable long id) {
+        return boxService.getDocByBox(id);
     }
 }

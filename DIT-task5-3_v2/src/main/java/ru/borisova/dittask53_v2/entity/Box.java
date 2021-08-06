@@ -1,6 +1,4 @@
-package ru.borisova.dittask53.entity;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
+package ru.borisova.dittask53_v2.entity;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -21,25 +19,28 @@ public class Box {
     @Column(name = "barcode")
     private String barcode;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "box")
-    @JsonBackReference
-    private List<Document> listDocs;
+    @OneToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH})
+    @JoinColumn(name = "box_id")
+    private List<Document> documentList;
 
-    public void addDocument(Document document) {
+    public List<Document> addDocument(Document document) {
         if (document != null) {
-            if (listDocs == null) {
-                listDocs = new ArrayList<Document>();
+            if (documentList == null) {
+                documentList = new ArrayList<Document>();
             }
-            listDocs.add(document);
-            document.setBox(this);
+            documentList.add(document);
         }
+        return documentList;
     }
 
-    public Box() {
-    }
+    public Box() {};
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -58,19 +59,13 @@ public class Box {
         this.barcode = barcode;
     }
 
-    public List<Document> getListDocs() {
-        return listDocs;
+    public List<Document> getDocumentList() {
+        return documentList;
     }
 
-    public void setListDocs(List<Document> l){
-        l.forEach(e -> e.setBox(this));
-        this.listDocs = l;
+    public void setDocumentList(List<Document> documentList) {
+        this.documentList = documentList;
     }
-
-    /*public void addDocument(Document d){
-        d.setBox(this);
-        this.listDocs.add(d);
-    }*/
 
     @Override
     public String toString() {
